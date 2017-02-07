@@ -4,6 +4,7 @@
  * @description :: Represents a release version, which contains assets and is a member of a channel
  * @docs        :: http://sailsjs.org/#!documentation/models
  */
+var uuid = require('node-uuid');
 
 module.exports = {
 

@@ -328,6 +328,8 @@ angular.module('app.core.data.service', [
         if (!versionId) {
           throw new Error('A version id is required for creation');
         }
+        $log.log('create assets: version:', version);
+        $log.log('create assets: versionId:', versionId);
 
         var deferred = $q.defer();
 
