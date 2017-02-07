@@ -34,6 +34,7 @@ module.exports = {
    * (GET /download/channel/:channel/:platform?': 'AssetController.download')
    */
   download: function(req, res) {
+    var product = req.params.product;
     var channel = req.params.channel;
     var version = req.params.version || undefined;
     var filename = req.params.filename;
@@ -81,6 +82,7 @@ module.exports = {
         if (version || channel) {
           Version
             .find(UtilityService.getTruthyObject({
+              product:product,
               name: version,
               channel: channel
             }))

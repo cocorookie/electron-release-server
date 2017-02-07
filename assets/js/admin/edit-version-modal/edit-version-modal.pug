@@ -1,6 +1,6 @@
 form(editable-form='', name='versionForm', onaftersave='acceptEdit()', e-role='form')
   .modal-header
-    h3.modal-title {{ version.name }}
+    h3.modal-title {{ version.product }} : {{ version.name }}
   .modal-body
     .form-horizontal
       // Version Name
@@ -22,7 +22,7 @@ form(editable-form='', name='versionForm', onaftersave='acceptEdit()', e-role='f
             e-cols='60'
             )
             p.release-notes {{ version.notes || 'Not set' }}
-      
+
       h4 Assets
       table.table.table-bordered.table-hover.table-condensed.table-custom(ng-cloak)
         thead
@@ -40,23 +40,23 @@ form(editable-form='', name='versionForm', onaftersave='acceptEdit()', e-role='f
               button.btn.btn-default.btn-sm(type='button', ng-click="openEditAssetModal(asset)")
                 | More
       button.btn.btn-success(type='button', ng-click='openAddAssetModal()') Add Asset
-      
+
       div.text-left
         h4 Required Assets
         h5
           strong Windows
         p
-          |  New installs require 
+          |  New installs require
           code .exe
-          |  assets. Updates require 
+          |  assets. Updates require
           code .nupkg
           | .
         h5
           strong OSX
         p
-          |  New installs require 
+          |  New installs require
           code .dmg
-          |  assets. Updates require 
+          |  assets. Updates require
           code .zip
           | .
   .modal-footer

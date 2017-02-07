@@ -13,6 +13,7 @@ angular.module('app.admin.edit-version-modal', [])
        */
       var updateVersionAssets = function() {
         var updatedVersion = _.find(DataService.data, {
+          product: version.product,
           name: version.name
         });
 
@@ -30,8 +31,8 @@ angular.module('app.admin.edit-version-modal', [])
           templateUrl: 'js/admin/add-version-asset-modal/add-version-asset-modal.html',
           controller: 'AddVersionAssetModalController',
           resolve: {
-            versionName: function() {
-              return version.name;
+            version: function() {
+              return version;
             }
           }
         });
@@ -63,14 +64,14 @@ angular.module('app.admin.edit-version-modal', [])
       };
 
       $scope.acceptEdit = function() {
-        DataService.updateVersion($scope.version, version.name)
+        DataService.updateVersion($scope.version, version.id)
           .then(function success(response) {
             $uibModalInstance.close();
           }, function error(response) {});
       };
 
       $scope.deleteVersion = function() {
-        DataService.deleteVersion(version.name)
+        DataService.deleteVersion(version.id)
           .then(function success(response) {
             $uibModalInstance.close();
           }, function error(response) {});

@@ -3,6 +3,18 @@
 .modal-body
   form.form-horizontal(novalidate='')
     fieldset
+      // productName
+      .form-group
+        label.col-md-4.control-label(for='channel') Channel
+          .col-md-7
+            select.form-control(
+            ng-model='version.product',
+            name='product',
+            ng-options='o as o for o in DataService.availableProducts',
+            required
+            )
+            hr
+            span.help-block Which product the version belongs to.
       // Version Name
       .form-group
         label.col-md-4.control-label(for='name') Version Name
@@ -13,17 +25,17 @@
             maxlength='12',
             required
             )
-          span.help-block This must match the 
+          span.help-block This must match the
             a(href='http://semver.org/') semver format
-            | . 
+            | .
             em ex. 1.0.1
           span.help-block(
             ng-hide="version.channel.name === 'stable'"
-            ) You are using a 
+            ) You are using a
             span.text-warning pre-release channel
-            | , it 
+            | , it
             strong.text-success must
-            |  follow the version triple, preceded by a dash. It may additionally be followed by a 
+            |  follow the version triple, preceded by a dash. It may additionally be followed by a
             span.text-info whole number.
             br
             em ex. 1.0.1

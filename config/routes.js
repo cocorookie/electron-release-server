@@ -31,10 +31,10 @@ module.exports.routes = {
   'GET /download/:version/:platform?/:filename?': 'AssetController.download',
 
   'GET /update': 'VersionController.redirect',
-  'GET /update/:platform/:version': 'VersionController.general',
-  'GET /update/:platform/:version/RELEASES': 'VersionController.windows',
-  'GET /update/:platform/:version/:channel/RELEASES': 'VersionController.windows',
-  'GET /update/:platform/:version/:channel': 'VersionController.general',
-  'GET /notes/:version?': 'VersionController.releaseNotes'
+  'GET /update/:product/:platform/:version': 'VersionController.general',
+  'GET /update/:product/:platform/:version/RELEASES': 'VersionController.windows',
+  'GET /update/:product/:platform/:version/:channel/RELEASES': 'VersionController.windows',
+  'GET /update/:product/:platform/:version/:channel': 'VersionController.general',
+  'GET /notes/:product/:version?': 'VersionController.releaseNotes'
 
 };

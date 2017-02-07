@@ -1,9 +1,10 @@
 .row
   h3 Version Management
-        
+
   table.table.table-bordered.table-hover.table-condensed.table-custom(ng-if='DataService.data.length' ng-cloak)
     thead
       tr
+        td Product
         td Name
         td Channel
         td Asset Count
@@ -11,6 +12,7 @@
         td
     tbody
       tr(data-ng-repeat='version in DataService.data')
+        td {{ version.product }}
         td {{ version.name }}
         td {{ version.channel.name }}
         td {{ version.assets.length }}

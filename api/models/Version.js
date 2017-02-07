@@ -8,10 +8,22 @@
 module.exports = {
 
   attributes: {
-    name: {
-      type: 'string',
+    id:{
+      type: 'text',
       primaryKey: true,
       unique: true,
+      defaultsTo: function() {
+        return uuid.v4();
+      }
+    },
+    product:{//产品
+      type: 'string',
+      required:true
+    },
+    name: {//版本号
+      type: 'string',
+      // primaryKey: true,
+      // unique: true,
       required: true
     },
 

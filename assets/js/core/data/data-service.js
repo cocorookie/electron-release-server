@@ -31,6 +31,11 @@ angular.module('app.core.data.service', [
         linux_32: 'Linux 32 bit'
       };
 
+      self.availableProducts = {
+        caibao: '采宝',
+        jujiang: '巨匠'
+      };
+
       self.filetypes = {
         windows_64: '.exe',
         windows_32: '.exe',
@@ -153,22 +158,22 @@ angular.module('app.core.data.service', [
        * Requires authentication (token is auto-injected).
        * @param  {Object}  version     A object containing all of the parameters
        *                               we would like to update the version with.
-       * @param  {String}  versionName The version's original name (in case we
+       * @param  {String}  versionId The version's original name (in case we
        *                               are trying to change it)
        * @return {Promise}             A promise which is resolve/rejected as
        *                               soon as we know the result of the operation
        *                               Contains the response object.
        */
-      self.updateVersion = function(version, versionName) {
+      self.updateVersion = function(version, versionId) {
         if (!version) {
           throw new Error('A version object is required for updating');
         }
-        if (!versionName) {
+        if (!versionId) {
           throw new Error('A version name is required for updating');
         }
 
         return $http.post(
-            '/api/version/' + versionName,
+            '/api/version/' + versionId,
             _.omit(version, ['assets'])
           )
           .then(function(response) {
@@ -187,18 +192,18 @@ angular.module('app.core.data.service', [
       /**
        * Deletes a version using the api.
        * Requires authentication (token is auto-injected).
-       * @param  {Object}  versionName The name of the version that we would
+       * @param  {Object}  versionId The name of the version that we would
        *                               like to delete.
        * @return {Promise}             A promise which is resolve/rejected as
        *                               soon as we know the result of the operation
        *                               Contains the response object.
        */
-      self.deleteVersion = function(versionName) {
-        if (!versionName) {
+      self.deleteVersion = function(versionId) {
+        if (!versionId) {
           throw new Error('A version name is required for deletion');
         }
 
-        return $http.delete('/api/version/' + versionName)
+        return $http.delete('/api/version/' + versionId)
           .then(function success(response) {
             Notification.success('Version Deleted Successfully.');
 
@@ -307,18 +312,21 @@ angular.module('app.core.data.service', [
        * Requires authentication (token is auto-injected).
        * @param  {Object}  asset       A object containing all of the parameters
        *                               we would like to create the asset with.
-       * @param  {Object}  versionName The name of the version that we would
+       * @param  {Object}  versionId The name of the version that we would
        *                               like to add this asset to.
        * @return {Promise}             A promise which is resolve/rejected as
        *                               soon as we know the result of the operation
        *                               Contains the response object.
        */
-      self.createAsset = function(asset, versionName) {
+      self.createAsset = function(asset, version, versionId) {
         if (!asset) {
           throw new Error('A asset object is required for creation');
         }
-        if (!versionName) {
-          throw new Error('A version name is required for creation');
+        if (!version) {
+          throw new Error('A version is required for creation');
+        }
+        if (!versionId) {
+          throw new Error('A version id is required for creation');
         }
 
         var deferred = $q.defer();
@@ -327,7 +335,8 @@ angular.module('app.core.data.service', [
           url: '/api/asset',
           data: _.merge({
             token: AuthService.getToken(),
-            version: versionName
+            version: version,
+            version_id: versionId
           }, asset)
         });
 

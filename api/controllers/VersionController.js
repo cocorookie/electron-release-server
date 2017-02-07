@@ -17,9 +17,13 @@ module.exports = {
    * (GET /update)
    */
   redirect: function(req, res) {
+    var product = req.param('product');
     var platform = req.param('platform');
     var version = req.param('version');
 
+    if (!product) {
+      return res.badRequest('Requires "product" parameter');
+    }
     if (!version) {
       return res.badRequest('Requires "version" parameter');
     }
@@ -27,7 +31,7 @@ module.exports = {
       return res.badRequest('Requires "platform" parameter');
     }
 
-    return res.redirect('/update/' + platform + '/' + version);
+    return res.redirect('/update/' + product + "/" + platform + '/' + version);
   },
 
   /**
@@ -35,12 +39,17 @@ module.exports = {
    *
    * Assumes stable channel unless specified
    *
-   * (GET /update/:platform/:version/:channel)
+   * (GET /update/:product/:platform/:version/:channel)
    */
   general: function(req, res) {
+    var product = req.param('product');
     var platform = req.param('platform');
     var version = req.param('version');
     var channel = req.param('channel') || 'stable';
+
+    if (!product) {
+      return res.badRequest('Requires "product" parameter');
+    }
 
     if (!version) {
       return res.badRequest('Requires `version` parameter');
@@ -53,6 +62,7 @@ module.exports = {
     var platforms = PlatformService.detect(platform, true);
 
     sails.log.debug('Update Search Query', {
+      product: product,
       platform: platforms,
       version: version,
       channel: channel
@@ -61,7 +71,11 @@ module.exports = {
     // Get specified version object, it's time will be used for the general
     // cutoff.
     Version
-      .findOne(version)
+      .findOne()
+      .where(UtilityService.getTruthyObject({
+        product:product,
+        name:version
+      }))
       .then(function(currentVersion) {
 
         var applicableChannels, createdAtFilter;
@@ -81,6 +95,7 @@ module.exports = {
 
         return Version
           .find(UtilityService.getTruthyObject({
+            product: product,
             channel: applicableChannels,
             createdAt: createdAtFilter
           }))
@@ -142,7 +157,7 @@ module.exports = {
             return res.ok({
               url: url.resolve(
                 sails.config.appUrl,
-                '/download/' + latestVersion.name + '/' +
+                '/download/' latestVersion.product + '/' + latestVersion.name + '/' +
                 latestVersion.assets[0].platform + '?filetype=zip'
               ),
               name: latestVersion.name,
@@ -159,13 +174,18 @@ module.exports = {
    * Currently, it will only serve a full.nupkg of the latest release with a
    * normalized filename (for pre-release)
    *
-   * (GET /update/:platform/:version/:channel/RELEASES)
+   * (GET /update/:product/:platform/:version/:channel/RELEASES)
    */
   windows: function(req, res) {
+    var product = req.param('product');
     var platform = req.param('platform');
     var version = req.param('version');
     var channel = req.param('channel') || 'stable';
 
+
+    if (!product) {
+      return res.badRequest('Requires `product` parameter');
+    }
     if (!version) {
       return res.badRequest('Requires `version` parameter');
     }
@@ -177,6 +197,7 @@ module.exports = {
     var platforms = PlatformService.detect(platform, true);
 
     sails.log.debug('Windows Update Search Query', {
+      product:product,
       platform: platforms,
       version: version,
       channel: channel
@@ -185,7 +206,11 @@ module.exports = {
     // Get specified version object, it's time will be used for the general
     // cutoff.
     Version
-      .findOne(version)
+      .findOne()
+      .where(UtilityService.getTruthyObject({
+        product:product,
+        name:version
+      }))
       .then(function(currentVersion) {
         var applicableChannels, createdAtFilter;
 
@@ -204,6 +229,7 @@ module.exports = {
 
         return Version
           .find(UtilityService.getTruthyObject({
+            product:product,
             channel: applicableChannels,
             createdAt: createdAtFilter
           }))
@@ -267,7 +293,7 @@ module.exports = {
             assets = _.map(latestVersion.assets, function(asset) {
               asset.name = url.resolve(
                 sails.config.appUrl,
-                '/download/' + asset.version + '/' + asset.platform + '/' +
+                '/download/' + product + '/' + asset.version + '/' + asset.platform + '/' +
                 asset.name
               );
 
@@ -286,13 +312,18 @@ module.exports = {
 
   /**
    * Get release notes for a specific version
-   * (GET /notes/:version?)
+   * (GET /notes/:product/:version?)
    */
   releaseNotes: function(req, res) {
+    var product = req.params.product;
     var version = req.params.version;
 
     Version
-      .findOne(version)
+      .findOne()
+      .where(UtilityService.getTruthyObject({
+        product:product,
+        name:version
+      }))
       .then(function(currentVersion) {
         if (!currentVersion) {
           return res.notFound('The specified version does not exist');

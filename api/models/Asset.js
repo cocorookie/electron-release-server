@@ -42,6 +42,11 @@ module.exports = {
     },
 
     version: {
+      type: 'string',
+      required: true
+    },
+
+    version_id: {
       model: 'version',
       required: true
     },
