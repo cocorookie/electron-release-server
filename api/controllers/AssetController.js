@@ -154,16 +154,19 @@ module.exports = {
     if (!data.version) {
       return res.badRequest('A version is required.');
     }
+    if (!data.versionId) {
+      return res.badRequest('A versionId is required.');
+    }
 
-    if (_.isString(data.version)) {
+    if (_.isString(data.versionId)) {
       // Only a name was provided, normalize
-      data.version = {
-        name: data.version
+      data.version_id = {
+        id: data.versionId
       };
-    } else if (_.isObjectLike(data.version) && _.has(data.version, 'name')) {
+    } else if (_.isObjectLike(data.versionId) && _.has(data.versionId, 'id')) {
       // Valid request, but we only want the name
-      data.version = {
-        name: data.version.name
+      data.version_id = {
+        id: data.versionId.id
       };
     } else {
       return res.badRequest('Invalid version provided.');

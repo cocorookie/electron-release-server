@@ -338,7 +338,7 @@ angular.module('app.core.data.service', [
           data: _.merge({
             token: AuthService.getToken(),
             version: version,
-            version_id: versionId
+            versionId: versionId
           }, asset)
         });
 
