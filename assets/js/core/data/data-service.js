@@ -139,7 +139,7 @@ angular.module('app.core.data.service', [
         }
 
         if (!version.product_name){
-          version.product_name = availableProducts[version.product];
+          version.product_name = self.availableProducts[version.product];
         }
 
         return $http.post('/api/version', version)
@@ -176,7 +176,7 @@ angular.module('app.core.data.service', [
           throw new Error('A version name is required for updating');
         }
         if (!version.product_name){
-          version.product_name = availableProducts[version.product];
+          version.product_name = self.availableProducts[version.product];
         }
 
         return $http.post(
