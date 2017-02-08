@@ -138,6 +138,10 @@ angular.module('app.core.data.service', [
           throw new Error('A version object is required for creation');
         }
 
+        if (!version.product_name){
+          version.product_name = availableProducts[version.product];
+        }
+
         return $http.post('/api/version', version)
           .then(function(response) {
             Notification.success('Version Created Successfully.');
@@ -170,6 +174,9 @@ angular.module('app.core.data.service', [
         }
         if (!versionId) {
           throw new Error('A version name is required for updating');
+        }
+        if (!version.product_name){
+          version.product_name = availableProducts[version.product];
         }
 
         return $http.post(
@@ -338,7 +345,7 @@ angular.module('app.core.data.service', [
           data: _.merge({
             token: AuthService.getToken(),
             version: version,
-            versionId: versionId
+           versionId: versionId
           }, asset)
         });
 

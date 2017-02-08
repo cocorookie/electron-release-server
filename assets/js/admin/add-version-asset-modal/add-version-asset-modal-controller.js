@@ -4,6 +4,7 @@ angular.module('app.admin.add-version-asset-modal', [])
       $scope.DataService = DataService;
 
       $scope.versionName = version.name;
+      $scope.productName = version.product_name;
 
       $scope.asset = {
         platform: '',

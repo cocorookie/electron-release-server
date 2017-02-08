@@ -1,6 +1,6 @@
 form(name='assetForm', role='form')
   .modal-header
-    h3.modal-title Add an asset to {{ versionName }}
+    h3.modal-title Add an asset to {{ productName }}:{{ versionName }}
   .modal-body
     .form-horizontal
       // Asset File
@@ -48,4 +48,4 @@ form(name='assetForm', role='form')
       button.btn.btn-danger(type='button', ng-click='closeModal()') Cancel
 
 
-    
+

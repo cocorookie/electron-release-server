@@ -21,6 +21,10 @@ module.exports = {
       type: 'string',
       required:true
     },
+    product_name:{//产品名称
+      type: 'string',
+      required:true
+    },
     name: {//版本号
       type: 'string',
       // primaryKey: true,
@@ -30,7 +34,7 @@ module.exports = {
 
     assets: {
       collection: 'asset',
-      via: 'version'
+      via: 'version_id'
     },
 
     channel: {

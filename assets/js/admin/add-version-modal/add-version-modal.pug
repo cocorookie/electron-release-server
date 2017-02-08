@@ -5,12 +5,12 @@
     fieldset
       // productName
       .form-group
-        label.col-md-4.control-label(for='channel') Product
+        label.col-md-4.control-label(for='product') Product
         .col-md-7
           select.form-control(
             ng-model='version.product',
             name='product',
-            ng-options='o as o for o in DataService.availableProducts',
+            ng-options='key as value for (key, value) in DataService.availableProducts',
             required
             )
           span.help-block Which product the version belongs to.
